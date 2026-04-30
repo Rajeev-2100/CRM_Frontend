@@ -20,7 +20,7 @@ function App() {
     <>
       <Header />
       <main className="py-0" style={{ height: "100vh" }}>
-        <div className="d-flex bg-info">
+        <div className="d-flex">
           <div
             className="d-flex flex-column align-items-center py-4"
             style={{ width: "30%", height: "100%" }}
@@ -60,7 +60,7 @@ function App() {
           </div>
           <div
             className="d-flex flex-column align-items-center bg-danger py-4"
-            style={{ width: "70%" }}
+            style={{ width: "70%", marginBottom: "3.5rem" }}
           >
             <h3 className="fs-bold">Main Content</h3>
             <div
@@ -68,11 +68,11 @@ function App() {
               style={{ height: "100%" }}
             >
               <div
-                className="d-flex column-gap-3 flex-wrap overflow-auto"
+                className="d-flex column-gap-3 flex-wrap overflow-auto "
                 style={{ flex: 1, minHeight: 0 }}
               >
                 {filteredStatus?.map((lead) => (
-                  <div key={lead._id} className="border p-2 m-1 bg-light">
+                  <div key={lead._id} className="border p-2 m-1 bg-light" style={{ width: '30%', height: '10rem'}}>
                     <p className="m-0">
                       <strong>{lead.name}</strong>
                     </p>

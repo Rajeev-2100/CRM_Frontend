@@ -22,7 +22,7 @@ const Leads = () => {
   return (
     <>
       <Header />
-      <main className="py-0" style={{ height: "100vh" }}>
+      <main className="py-0 " style={{ height: "100vh" }}>
         <div className="d-flex">
           <div
             className="d-flex flex-column align-items-center py-4"
@@ -38,8 +38,8 @@ const Leads = () => {
             </Link>
           </div>
           <div
-            className="d-flex flex-column align-items-center bg-danger py-4"
-            style={{ width: "70%" }}
+            className="d-flex flex-column align-items-center bg-danger py-4 "
+            style={{ width: "70%", marginBottom: "3.5rem" }}
           >
             <h3 className="fs-bold">Lead Overview</h3>
             <div
@@ -52,7 +52,7 @@ const Leads = () => {
               >
                 {bothFilteredLead?.map((lead) => (
                   console.log(typeof lead._id),
-                  <div key={lead._id} className="border p-2 m-1 bg-light">
+                  <div key={lead._id} className="border p-2 m-1 bg-light" style={{  width: '30%', height: '10rem' }}>
                     <p className="m-0">
                       <strong>{lead.name}</strong>
                     </p>
@@ -63,7 +63,7 @@ const Leads = () => {
                       <b>Name: </b>
                       {lead.salesAgent.name}
                     </p>
-                    <Link className="btn btn-primary" to={`/leads/${lead._id}`}>Lead Details</Link>
+                    <Link className="btn btn-primary mb-3" to={`/leads/${lead._id}`}>Lead Details</Link>
                     <br />
                   </div>
                 ))}
