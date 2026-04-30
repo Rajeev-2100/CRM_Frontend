@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 
 const Leads = () => {
   const { leads } = useContext(LeadContext);
-  console.log(leads);
   const [selectedAgent, setSelectedAgent] = useState("none");
   const [selectedCloseTime, setSelectedCloseTime] = useState("none");
 
@@ -52,6 +51,7 @@ const Leads = () => {
                 style={{ flex: 1, minHeight: 0 }}
               >
                 {bothFilteredLead?.map((lead) => (
+                  console.log(typeof lead._id),
                   <div key={lead._id} className="border p-2 m-1 bg-light">
                     <p className="m-0">
                       <strong>{lead.name}</strong>
@@ -63,6 +63,7 @@ const Leads = () => {
                       <b>Name: </b>
                       {lead.salesAgent.name}
                     </p>
+                    <Link className="btn btn-primary" to={`/leads/${lead._id}`}>Lead Details</Link>
                     <br />
                   </div>
                 ))}

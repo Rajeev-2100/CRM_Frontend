@@ -1,0 +1,196 @@
+import { useParams } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import { useContext, useState } from "react";
+import LeadContext from "../context/LeadContext";
+import { Link } from "react-router-dom";
+import useFetch from "../useFetch";
+
+const LeadManagement = () => {
+  const [formData, setFormData] = useState({});
+  const { leads } = useContext(LeadContext);
+  const [selectedAuthor, setSelectedAuthor] = useState("");
+  const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState("");
+  const { leadId } = useParams();
+  const leadDetails = leads?.find((lead) => lead._id === leadId);
+  const { data: leadComment } = useFetch(
+    `http://localhost:3001/leads/${leadId}/comments`,
+  );
+
+  const displayComments =
+    comments.length > 0 ? comments : leadComment?.data || [];
+
+  const formCommentSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      lead: leadId,
+      commentText: comment,
+      author: selectedAuthor,
+    };
+
+    try {
+      const res = await fetch(
+        `http://localhost:3001/leads/${leadId}/comments`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      const data = await res.json();
+
+      if (leadComment?.data && comments.length === 0) {
+        setComments(leadComment.data);
+      }
+
+      setComments((prev) => [...prev, data?.data]);
+      setComment("");
+      setSelectedAuthor("");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  console.log(displayComments);
+
+  const uniqueAgents = [
+    ...new Map(leads?.map((l) => [l.salesAgent._id, l.salesAgent])).values(),
+  ];
+
+  return (
+    <>
+      <Header />
+      <main className="py-0" style={{ height: "100vh" }}>
+        <div className="d-flex">
+          <div
+            className="d-flex flex-column align-items-center py-4"
+            style={{ width: "30%", height: "100%" }}
+          >
+            <h3>SideBar</h3>
+            <hr className="bg-danger" />
+            <Link
+              className="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+              to={`/`}
+            >
+              <h5>Back to Dashboard</h5>
+            </Link>
+          </div>
+          <div
+            className="d-flex flex-column align-items-center bg-danger py-4"
+            style={{ width: "70%" }}
+          >
+            <h3 className="fs-bolder">Lead Details</h3>
+            <div
+              className="w-75 mt-3 d-flex flex-column py-5"
+              style={{ height: "100%" }}
+            >
+              <p className="fs-5">
+                <strong>Lead Name: </strong>
+                {leadDetails?.name}
+              </p>
+              <p className="fs-5">
+                <strong>Sales Agent: </strong>
+                {leadDetails?.salesAgent.name}
+              </p>
+              <p className="fs-5">
+                <strong>Lead Source: </strong>
+                {leadDetails?.source}
+              </p>
+              <p className="fs-5">
+                <strong>Lead Status: </strong>
+                {leadDetails?.status}
+              </p>
+              <p className="fs-5">
+                <strong>Priority: </strong>
+                {leadDetails?.priority}
+              </p>
+              <p className="fs-5">
+                <strong>Time to Close: </strong>
+                {leadDetails?.timeToClose}
+              </p>
+              <hr />
+              <div className="d-flex flex-row justify-content-center gap-4">
+                <Link to={``} className="btn btn-primary">
+                  <h6 className="fs-bold d-inline">Edit Lead</h6>
+                </Link>
+                <Link to={``} className="btn btn-primary">
+                  <h6 className="fs-bold d-inline">Delete Lead</h6>
+                </Link>
+              </div>
+              <hr />
+              <div>
+                <h5 className="text-center">Comment Section</h5>
+                <div width="100%">
+                  {displayComments.map((comment) => {
+                    const date = new Date(comment.createdAt)
+                    return (
+
+                      <div
+                      className="d-flex justify-content-between"
+                      key={comment._id}
+                    >
+                      <div className="d-flex flex-column">
+                        <p className="d-inline m-0">
+                          <b>Name: </b>
+                          {comment.author.name}
+                        </p>
+                        <p className="d-inline mb-3">
+                          <b>Comment: </b>
+                          {comment.commentText}
+                        </p>
+                      </div>
+                      <div className="">{date.toLocaleString()}</div>
+                    </div>
+                )
+                  })}
+                </div>
+                <hr />
+                <div>
+                  <form
+                    className="d-flex flex-column"
+                    onSubmit={formCommentSubmit}
+                  >
+                    <label htmlFor="author">
+                      <h6>Author:</h6>{" "}
+                    </label>
+                    <select
+                      name="author"
+                      id="author"
+                      onChange={(e) => setSelectedAuthor(e.target.value)}
+                    >
+                      <option value="">Select Author: </option>
+                      {uniqueAgents.map((agent) => (
+                        <option key={agent._id} value={agent._id}>
+                          {agent.name}
+                        </option>
+                      ))}
+                    </select>
+                    <br />
+                    <label htmlFor="comment">
+                      <h6>Comment:</h6>{" "}
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <button className="my-4 btn btn-primary " type="submit">
+                      Submit
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+};
+
+export default LeadManagement;
