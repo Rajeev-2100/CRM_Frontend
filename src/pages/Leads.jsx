@@ -112,7 +112,7 @@ const Leads = () => {
               </div>
 
               <div className="mt-4">
-                <Link  className="btn btn-primary">Add New Lead </Link>
+                <Link to={`/addleadform`}  className="btn btn-primary">Add New Lead </Link>
               </div>
             </div>
           </div>

@@ -64,8 +64,8 @@ function App() {
           >
             <h3 className="fs-bold">Main Content</h3>
             <div
-              className="w-75 mt-3 d-flex flex-column"
-              style={{ height: "100%" }}
+              className="w-75 mt-3 d-flex flex-column flex-wrap"
+              style={{ height: "100%", width: '85%' }}
             >
               <div
                 className="d-flex column-gap-3 flex-wrap overflow-auto "
@@ -118,7 +118,7 @@ function App() {
                 </select>
               </div>
               <div className="mt-3">
-                <button className="btn btn-primary w-100">Add New Lead</button>
+                <Link to={`/addleadform`} className="btn btn-primary w-100">Add New Lead</Link>
               </div>
             </div>
           </div>
