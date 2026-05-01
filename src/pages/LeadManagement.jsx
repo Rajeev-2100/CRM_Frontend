@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import LeadContext from "../context/LeadContext";
 import { Link } from "react-router-dom";
 import useFetch from "../useFetch";
+import Management from "../components/Header/Management";
 
 const LeadManagement = () => {
   const [formData, setFormData] = useState({});
@@ -64,7 +65,7 @@ const LeadManagement = () => {
 
   return (
     <>
-      <Header />
+      <Management />
       <main className="py-0" style={{ height: "100vh" }}>
         <div className="d-flex">
           <div
