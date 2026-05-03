@@ -1,4 +1,4 @@
-const LeadList = () => {
+const LeadListHeader = () => {
     return (
     <>
       <header>
@@ -12,4 +12,4 @@ const LeadList = () => {
   );
 };
 
-export default LeadList
+export default LeadListHeader

@@ -1,9 +1,8 @@
-import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useContext, useState } from "react";
 import LeadContext from "../context/LeadContext";
 import { Link } from "react-router-dom";
-import LeadList from "../components/Header/LeadList";
+import LeadListHeader from "../components/Header/LeadListHeader";
 
 const Leads = () => {
   const { leads } = useContext(LeadContext);
@@ -22,7 +21,7 @@ const Leads = () => {
 
   return (
     <>
-      <LeadList />
+      <LeadListHeader />
       <main className="py-0 " style={{ height: "100vh" }}>
         <div className="d-flex">
           <div

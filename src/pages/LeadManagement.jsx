@@ -1,11 +1,10 @@
 import { useParams } from "react-router-dom";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
 import { useContext, useState } from "react";
 import LeadContext from "../context/LeadContext";
 import { Link } from "react-router-dom";
 import useFetch from "../useFetch";
-import Management from "../components/Header/Management";
+import ManagementHeader from "../components/Header/ManagementHeader";
 
 const LeadManagement = () => {
   const [formData, setFormData] = useState({});
@@ -65,7 +64,7 @@ const LeadManagement = () => {
 
   return (
     <>
-      <Management />
+      <ManagementHeader />
       <main className="py-0" style={{ height: "100vh" }}>
         <div className="d-flex">
           <div

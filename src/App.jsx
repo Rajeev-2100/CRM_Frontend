@@ -1,7 +1,6 @@
 import useFetch from "./useFetch.jsx";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { useContext, useState } from "react";
 import LeadContext from "./context/LeadContext.jsx";
@@ -10,7 +9,7 @@ import MainHeader from "./components/Header/MainHeader.jsx";
 function App() {
   const { leads, leadStatus } = useContext(LeadContext);
   const [selectedStatus, setSelectedStatus] = useState("none");
-  console.log("Value: ", selectedStatus);
+  // console.log("Value: ", selectedStatus);
 
   const filteredStatus =
     selectedStatus === "none" || selectedStatus === ""
@@ -36,7 +35,7 @@ function App() {
             </Link>
             <Link
               className="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
-              to={`/sales`}
+              to={`/salesView`}
             >
               <h5>Sales</h5>
             </Link>

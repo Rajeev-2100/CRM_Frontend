@@ -2,7 +2,7 @@ import { useContext } from "react";
 import LeadContext from "../../context/LeadContext";
 import { useParams } from "react-router-dom";
 
-const Management = () => {
+const ManagementHeader = () => {
   const { leadId } = useParams();
   const { leads } = useContext(LeadContext)
 
@@ -22,4 +22,4 @@ const Management = () => {
   );
 };
 
-export default Management;
+export default ManagementHeader

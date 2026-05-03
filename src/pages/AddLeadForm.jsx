@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import Footer from "../components/Footer";
-import Header from "../components/Header";
 import LeadContext from "../context/LeadContext";
+import AddLeadFormHeader from "../components/Header/AddLeadFormHeader";
 
 const AddLeadForm = () => {
   const { leads } = useContext(LeadContext);
@@ -14,10 +14,9 @@ const AddLeadForm = () => {
   const [timeToClose, setTimeToClose] = useState(0);
   const [tags, setTags] = useState("");
 
-
   const formLeadHandler = async (e) => {
     e.preventDefault();
-    
+
     const payload = {
       name,
       source: leadSource,
@@ -34,10 +33,18 @@ const AddLeadForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
-      if (name !== "" && leadSource !== "" && salesAgent !== "" && status !== "" && priority !== "" && timeToClose !== 0 && tags !== "" ) {
+      if (
+        name !== "" &&
+        leadSource !== "" &&
+        salesAgent !== "" &&
+        status !== "" &&
+        priority !== "" &&
+        timeToClose !== 0 &&
+        tags !== ""
+      ) {
         setFormData(true);
       }
 
@@ -51,7 +58,7 @@ const AddLeadForm = () => {
       setTimeToClose("");
       setTags("");
     } catch (error) {
-        throw error
+      throw error;
     }
   };
 
@@ -61,11 +68,11 @@ const AddLeadForm = () => {
 
   const uniquePriorities = [...new Set(leads?.map((lead) => lead.priority))];
 
-  const uniqueStatus = [...new Set(leads?.map((lead) => lead.status))]
+  const uniqueStatus = [...new Set(leads?.map((lead) => lead.status))];
 
   return (
     <>
-      <Header />
+      <AddLeadFormHeader />
       <main className="container py-4" style={{ marginBottom: "3.5rem" }}>
         <div
           className="d-flex flex-column justify-content-center align-items-center"
@@ -135,7 +142,9 @@ const AddLeadForm = () => {
                 <option value="none">Select Status</option>
                 {uniqueStatus?.map((status, index) => (
                   <>
-                    <option value={status} key={index}>{status}</option>
+                    <option value={status} key={index}>
+                      {status}
+                    </option>
                   </>
                 ))}
               </select>
@@ -153,7 +162,9 @@ const AddLeadForm = () => {
                 <option value="none">Select Priority </option>
                 {uniquePriorities?.map((pri, index) => (
                   <>
-                    <option value={pri} key={index}>{pri}</option>
+                    <option value={pri} key={index}>
+                      {pri}
+                    </option>
                   </>
                 ))}
               </select>
@@ -190,7 +201,7 @@ const AddLeadForm = () => {
             </div>
             <div className="d-grid gap-2">
               <button className="btn btn-primary" type="submit">
-                Button
+                Submit Button
               </button>
             </div>
           </form>
