@@ -33,13 +33,15 @@ export const options = {
 };
 
 export const VerticalChart = () => {
+  const hostedUrl = `https://crm-backend-tawny.vercel.app`;
+
   const { data: leadClosed } = useFetch(
-    "https://crm-backend-tawny.vercel.app/leads/status-count",
+    `${hostedUrl}/leads/status-count`,
   );
-  
+
   const { allLeads } = useContext(LeadContext);
-  console.log(allLeads)
-  const filteredLeads = allLeads?.filter((lead) => lead.status === "Closed") || []
+  console.log(allLeads);
+  const filteredLeads = allLeads?.filter((lead) => lead.status === "Closed") || [];
   const displayLeads = filteredLeads?.map((lead) => lead.salesAgent?.name || "No Agent Assigned");
   const data = {
     labels: displayLeads,

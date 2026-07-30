@@ -13,7 +13,9 @@ export function AgentsProvider({ children }) {
 
   const [agentsState, setAgentsState] = useState([]);
 
-  const { data } = useFetch("https://crm-backend-tawny.vercel.app/agents");
+  const hostedUrl = `https://crm-backend-tawny.vercel.app`;
+
+  const { data } = useFetch(`${hostedUrl}/agents`);
 
   const fetchedAgents = data?.data || [];
 
@@ -28,7 +30,7 @@ export function AgentsProvider({ children }) {
     e.preventDefault();
 
     try {
-      const res = await fetch(`https://crm-backend-tawny.vercel.app/agents`, {
+      const res = await fetch(`${hostedUrl}/agents`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,12 +62,9 @@ export function AgentsProvider({ children }) {
 
   const deleteListByAgent = async (agentName) => {
     try {
-      const res = await fetch(
-        `https://crm-backend-tawny.vercel.app/agents/${agentName}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const res = await fetch(`${hostedUrl}/agents/${agentName}`, {
+        method: "DELETE",
+      });
 
       if (res.ok) {
         toast.success("Successfully Deleted Agent");

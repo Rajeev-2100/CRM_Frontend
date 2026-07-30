@@ -8,10 +8,12 @@ const LeadContext = createContext();
 export function LeadProvider({ children }) {
   const { displayAgents } = useContext(AgentsContext);
 
-  const { data } = useFetch("https://crm-backend-tawny.vercel.app/leads/");
+  const hostedUrl = `https://crm-backend-tawny.vercel.app`;
+
+  const { data } = useFetch(`${hostedUrl}/leads/`);
 
   const { data: statusValue } = useFetch(
-    "https://crm-backend-tawny.vercel.app/leads/status-count",
+    `${hostedUrl}/leads/status-count`,
   );
 
   const leadsStatus = statusValue?.data;
@@ -59,7 +61,7 @@ export function LeadProvider({ children }) {
         toast.error("Please fill all details");
         return;
       }
-      const res = await fetch("https://crm-backend-tawny.vercel.app/leads", {
+      const res = await fetch(`${hostedUrl}/leads`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,12 +104,9 @@ export function LeadProvider({ children }) {
 
   const deletedLeadByLeadId = async (leadId) => {
     try {
-      const res = await fetch(
-        `https://crm-backend-tawny.vercel.app/leads/${leadId}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const res = await fetch(`${hostedUrl}/leads/${leadId}`, {
+        method: "DELETE",
+      });
 
       if (res.ok) {
         toast.success("Lead deleted successfully");
