@@ -10,7 +10,7 @@ export function LeadProvider({ children }) {
 
   const hostedUrl = `https://crm-backend-tawny.vercel.app`;
 
-  const { data } = useFetch(`${hostedUrl}/leads/`);
+  const { data } = useFetch(`${hostedUrl}/leads`);
 
   const { data: statusValue } = useFetch(
     `${hostedUrl}/leads/status-count`,
