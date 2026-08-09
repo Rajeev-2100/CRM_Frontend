@@ -4,7 +4,6 @@ import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import LeadContext from "../context/LeadContext";
-import useFetch from "../useFetch";
 
 const LeadStatusView = () => {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -14,7 +13,6 @@ const LeadStatusView = () => {
 
   const { leadsStatus, allLeads } = useContext(LeadContext);
 
-  useFetch(`https://crm-backend-tawny.vercel.app/leads/${statusValue}`);
 
   const allFilteredLead = allLeads
     ?.filter((lead) =>

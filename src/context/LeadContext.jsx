@@ -83,7 +83,7 @@ export function LeadProvider({ children }) {
           salesAgent: selectedAgent,
         };
 
-        console.log("New Leads: ", newLead);
+
 
         setAllLeads((prev) => [...prev, newLead]);
         setName("");
@@ -97,7 +97,7 @@ export function LeadProvider({ children }) {
         navigation("/leads");
       }
     } catch (error) {
-      toast.error(result.message || "Something went wrong");
+      toast.error(error.message || "Something went wrong");
       return;
     }
   };
@@ -114,13 +114,13 @@ export function LeadProvider({ children }) {
         setAllLeads((prev) => {
           const updated = prev.filter((lead) => lead._id !== leadId);
 
-          console.log(updated);
+
 
           return updated;
         });
       }
     } catch (error) {
-      toast.error(result.message || "Something went wrong");
+      toast.error(error.message || "Something went wrong");
       return;
     }
   };

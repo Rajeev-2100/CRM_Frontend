@@ -7,7 +7,7 @@ import LeadContext from "../context/LeadContext";
 import useFetch from "../useFetch";
 
 const AgentsList = () => {
-  const { agents, allAgents, newAgentData } = useContext(AgentsContext);
+  const { allAgents } = useContext(AgentsContext);
   const { allLeads } = useContext(LeadContext);
   const [showSidebar, setShowSidebar] = useState(true);
 

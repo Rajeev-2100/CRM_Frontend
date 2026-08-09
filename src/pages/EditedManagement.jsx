@@ -15,11 +15,11 @@ const EditedManagement = () => {
 
   const navigation = useNavigate();
 
-  const { allLeads, newLeadData, setNewLeadData } = useContext(LeadContext);
+  const { allLeads, setAllLeads } = useContext(LeadContext);
 
   const { allAgents } = useContext(AgentsContext);
 
-  const displayLeads = newLeadData?.length > 0 ? newLeadData : allLeads || [];
+  const displayLeads = allLeads || [];
 
   const leadDetails = displayLeads.find((lead) => lead._id === leadId);
 
@@ -104,10 +104,8 @@ const EditedManagement = () => {
 
       toast.success("Successfully, Edited the Lead Details");
 
-      setNewLeadData((prev) =>
-        (prev || allLeads).map((lead) =>
-          lead._id === leadId ? data.data : lead,
-        ),
+      setAllLeads((prev) =>
+        prev.map((lead) => (lead._id === leadId ? data.data : lead)),
       );
 
       navigation("/leads");

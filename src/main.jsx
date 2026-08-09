@@ -7,7 +7,6 @@ import { LeadProvider } from "./context/LeadContext.jsx";
 import Leads from "./pages/Leads.jsx";
 import LeadManagement from "./pages/LeadManagement.jsx";
 import AddLeadForm from "./pages/AddLeadForm.jsx";
-import SalesList from "./pages/AgentsList.jsx";
 import { AgentsProvider } from "./context/AgentsContext.jsx";
 import AgentsList from "./pages/AgentsList.jsx";
 import AddNewAgents from "./pages/AddNewAgents.jsx";

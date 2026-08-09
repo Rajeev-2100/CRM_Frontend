@@ -55,7 +55,7 @@ export function AgentsProvider({ children }) {
         setEmail("");
       }
     } catch (error) {
-      toast.error(result.message || "Something went wrong");
+      toast.error(error.message || "Something went wrong");
       return;
     }
   };
@@ -77,7 +77,7 @@ export function AgentsProvider({ children }) {
         setAgentsState(updatedAgents);
       }
     } catch (error) {
-      toast.error(result.message || "Something went wrong");
+      toast.error(error.message || "Something went wrong");
     }
   };
 

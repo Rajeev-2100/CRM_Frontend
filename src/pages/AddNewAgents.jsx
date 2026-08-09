@@ -4,7 +4,6 @@ import Footer from "../components/Footer";
 import AddAgentHeader from "../components/Header/AddAgentHeader";
 import { Link } from "react-router-dom";
 import AgentsContext from "../context/AgentsContext";
-import useFetch from "../useFetch";
 
 const AddNewAgents = () => {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -14,16 +13,11 @@ const AddNewAgents = () => {
   };
 
   const {
-    allAgents,
-    fullAgentData,
     formNewAgent,
     setName,
     name,
     email,
     setEmail,
-    newAgentData,
-    setSuccessMessage,
-    successMessage,
   } = useContext(AgentsContext);
 
   return (

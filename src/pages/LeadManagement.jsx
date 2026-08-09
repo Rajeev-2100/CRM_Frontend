@@ -15,7 +15,7 @@ const LeadManagement = () => {
   const toggleSidebar = () => {
     setShowSidebar((prev) => !prev);
   };
-  console.log('Show SIderBar: ',showSidebar)
+
 
 
   const { leadId } = useParams();
@@ -24,7 +24,6 @@ const LeadManagement = () => {
   const leadDetails = allLeads?.find((lead) => lead._id === leadId);
   const { displayAgents } = useContext(AgentsContext);
 
-  const navigation = useNavigate();
 
   const [selectedAuthorId, setSelectedAuthorId] = useState("");
 

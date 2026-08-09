@@ -9,7 +9,6 @@ const ManagementHeader = ({ toggleSidebar }) => {
   const { allLeads } = useContext(LeadContext);
 
   const filteredLead = allLeads?.find((lead) => lead._id === leadId);
-  console.log('Filtered Lead: ',filteredLead)
 
   return (
     <>

@@ -7,9 +7,9 @@ import LeadListHeader from "../components/Header/LeadListHeader";
 
 const Leads = () => {
   const [showSidebar, setShowSidebar] = useState(true);
-  const { allLeads, newLeadData } = useContext(LeadContext);
+  const { allLeads } = useContext(LeadContext);
 
-  const displayLeads = newLeadData?.length > 0 ? newLeadData : allLeads;
+  const displayLeads = allLeads;
 
   const [statusValue, setStatusValue] = useState("none");
   const [priorityValue, setPriorityValue] = useState("none");
