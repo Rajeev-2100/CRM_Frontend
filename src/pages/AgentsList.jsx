@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import SalesAgentHeaderView from "../components/Header/SalesAgentHeaderView";
 import Footer from "../components/Footer";
 import { useContext, useState } from "react";
-import AgentsContext from "../context/AgentsContext";
-import LeadContext from "../context/LeadContext";
+import { useAgents } from "../context/AgentsContext";
+import LeadContext, { useLead } from "../context/LeadContext";
 import useFetch from "../useFetch";
 
 const AgentsList = () => {
-  const { allAgents } = useContext(AgentsContext);
-  const { allLeads } = useContext(LeadContext);
+  const { allAgents } = useAgents();
+  const { allLeads } = useLead()
   const [showSidebar, setShowSidebar] = useState(true);
 
   const [agentName, setAgentName] = useState("none");
@@ -57,9 +57,10 @@ const AgentsList = () => {
         <div className="row g-4">
           {showSidebar && (
             <div className="col-12 col-md-3">
-              <div className="bg-white shadow rounded-4 p-4 h-100">
+              <div className="bg-white shadow rounded-4  h-100">
                 <h3 className="text-center mb-4">SideBar</h3>
-                <div className="d-flex flex-column gap-3">
+                <hr />
+                <div className="d-flex flex-column gap-3 mx-2">
                   <Link className="btn btn-outline-secondary" to="/">
                     <h5 className="mb-0">Back to Dashboard</h5>
                   </Link>
@@ -79,7 +80,10 @@ const AgentsList = () => {
           <div className={showSidebar ? "col-12 col-md-9" : "col-12"}>
             <div
               className="rounded-4 shadow-lg p-4 p-md-5"
-              style={{ backgroundColor: "#ffffff", border: "1px solid #e3e8ef" }}
+              style={{
+                backgroundColor: "#ffffff",
+                border: "1px solid #e3e8ef",
+              }}
             >
               <div className="text-center mb-5">
                 <h2 className="fw-bold text-dark">Lead List By Agent</h2>
@@ -166,7 +170,10 @@ const AgentsList = () => {
                     <div className="col-12 col-md-6" key={lead._id}>
                       <div
                         className="rounded-4 shadow-sm p-3 h-100"
-                        style={{ backgroundColor: "#ffffff", border: "1px solid #eef1f6" }}
+                        style={{
+                          backgroundColor: "#ffffff",
+                          border: "1px solid #eef1f6",
+                        }}
                       >
                         <h5 className="fw-bold mb-2">{lead.name}</h5>
 
@@ -178,21 +185,30 @@ const AgentsList = () => {
                         <div className="d-flex flex-wrap gap-2 mt-2">
                           <span
                             className="badge"
-                            style={{ backgroundColor: "#ffedd5", color: "#9a3412" }}
+                            style={{
+                              backgroundColor: "#ffedd5",
+                              color: "#9a3412",
+                            }}
                           >
                             {lead.priority}
                           </span>
 
                           <span
                             className="badge"
-                            style={{ backgroundColor: "#dcfce7", color: "#166534" }}
+                            style={{
+                              backgroundColor: "#dcfce7",
+                              color: "#166534",
+                            }}
                           >
                             {lead.status}
                           </span>
 
                           <span
                             className="badge"
-                            style={{ backgroundColor: "#e0e7ff", color: "#3730a3" }}
+                            style={{
+                              backgroundColor: "#e0e7ff",
+                              color: "#3730a3",
+                            }}
                           >
                             {lead.timeToClose} Days
                           </span>

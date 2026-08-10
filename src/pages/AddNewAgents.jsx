@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import Footer from "../components/Footer";
 import AddAgentHeader from "../components/Header/AddAgentHeader";
 import { Link } from "react-router-dom";
-import AgentsContext from "../context/AgentsContext";
+import { useAgents } from "../context/AgentsContext";
 
 const AddNewAgents = () => {
   const [showSidebar, setShowSidebar] = useState(true);
@@ -12,24 +12,22 @@ const AddNewAgents = () => {
     setShowSidebar((prev) => !prev);
   };
 
-  const {
-    formNewAgent,
-    setName,
-    name,
-    email,
-    setEmail,
-  } = useContext(AgentsContext);
+  const { formNewAgent, setName, name, email, setEmail } = useAgents();
 
   return (
     <>
       <AddAgentHeader toggleSidebar={toggleSidebar} title="Add New Lead" />
-      <main className="container-fluid py-3" style={{ backgroundColor: "#f4f7fb", minHeight: "100vh" }}>
+      <main
+        className="container-fluid py-3"
+        style={{ backgroundColor: "#f4f7fb", minHeight: "100vh" }}
+      >
         <div className="row g-3">
           {showSidebar && (
             <div className="col-12 col-md-3">
-              <div className="bg-white shadow rounded-4 p-4 h-100">
+              <div className="bg-white shadow rounded-4 h-100">
                 <h3 className="text-center mb-4">SideBar</h3>
-                <div className="d-flex flex-column gap-3">
+                <hr />
+                <div className="d-flex flex-column gap-3 mx-2">
                   <Link className="btn btn-outline-secondary" to="/">
                     <h5 className="mb-0">Back to Dashboard</h5>
                   </Link>
@@ -67,7 +65,10 @@ const AddNewAgents = () => {
                   </div>
 
                   <div className="mb-4">
-                    <label htmlFor="agentEmail" className="form-label fs-4 text-white">
+                    <label
+                      htmlFor="agentEmail"
+                      className="form-label fs-4 text-white"
+                    >
                       Email Address:{" "}
                     </label>
                     <input
@@ -81,7 +82,11 @@ const AddNewAgents = () => {
                   <div className="mt-4">
                     <button
                       className="btn w-100"
-                      style={{ backgroundColor: "#ffffff", color: "#4f6ef7", fontWeight: 600 }}
+                      style={{
+                        backgroundColor: "#ffffff",
+                        color: "#4f6ef7",
+                        fontWeight: 600,
+                      }}
                       type="submit"
                     >
                       Submit Button

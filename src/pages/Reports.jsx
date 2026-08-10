@@ -28,10 +28,11 @@ const Reports = () => {
           {showSidebar && (
             <div className="col-12 col-md-3">
               <div className="bg-white shadow rounded-4 p-4 h-100">
-                <h3 className="text-center mb-4">SideBar</h3>
-                <div className="d-flex flex-column gap-3">
-                  <Link className="btn btn-outline-secondary" to="/">
-                    <h5 className="mb-0">Back to Dashboard</h5>
+                <h4 className="fw-bold text-center mb-4">SideBar </h4>
+                <hr />
+                <div className="d-grid">
+                  <Link className="btn btn-outline-secondary rounded-3" to="/">
+                    Back to Dashboard
                   </Link>
                 </div>
               </div>
@@ -42,7 +43,10 @@ const Reports = () => {
             <div className="d-flex flex-column gap-4">
               <div
                 className="shadow rounded-4 p-4 p-md-5"
-                style={{ backgroundColor: "#ffffff", border: "1px solid #e3e8ef" }}
+                style={{
+                  backgroundColor: "#ffffff",
+                  border: "1px solid #e3e8ef",
+                }}
               >
                 <div className="text-center">
                   <h2 className="fw-bold text-dark">Reports Dashboard</h2>
@@ -110,7 +114,9 @@ const Reports = () => {
                 </div>
 
                 <div>
-                  <h2 className="fw-bold text-center text-dark">Status Of Closed Lead</h2>
+                  <h2 className="fw-bold text-center text-dark">
+                    Status Of Closed Lead
+                  </h2>
 
                   <p className="text-muted mb-3 text-center">
                     Visual representation of all lead statuses in the CRM

@@ -1,66 +1,104 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import useFetch from "../useFetch";
 import { useNavigate } from "react-router-dom";
-import AgentsContext from "./AgentsContext";
+import { useAgents } from "./AgentsContext";
 import { toast } from "react-toastify";
+
 const LeadContext = createContext();
 
 export function LeadProvider({ children }) {
-  const { displayAgents } = useContext(AgentsContext);
+  const { agents } = useAgents();
+  const navigation = useNavigate();
+  
+  const hostedUrl = "https://crm-backend-tawny.vercel.app";
 
-  const hostedUrl = `https://crm-backend-tawny.vercel.app`;
-
-  const { data } = useFetch(`${hostedUrl}/leads`);
-
-  const { data: statusValue } = useFetch(
-    `${hostedUrl}/leads/status-count`,
-  );
-
-  const leadsStatus = statusValue?.data;
-
+  // State
   const [allLeads, setAllLeads] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  // Form states
+  const [name, setName] = useState("");
+  const [leadSource, setLeadSource] = useState("");
+  const [salesAgentId, setSalesAgentId] = useState("");
+  const [status, setStatus] = useState("");
+  const [priority, setPriority] = useState("");
+  const [timeToClose, setTimeToClose] = useState("");
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
 
+  // Fetch leads
+  const { data, loading: fetchLoading, error: fetchError } = useFetch(`${hostedUrl}/leads`);
+  
+  // Fetch status counts
+  const { data: statusValue } = useFetch(`${hostedUrl}/leads/status-count`);
+  
+  const leadsStatus = statusValue?.data || [];
+
+  // Update leads when data is fetched
   useEffect(() => {
     if (data?.data) {
       setAllLeads(data.data);
     }
   }, [data]);
 
-  const navigation = useNavigate();
+  // Add tag function
+  const addTag = () => {
+    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+      setTags([...tags, tagInput.trim()]);
+      setTagInput("");
+    }
+  };
 
-  const [name, setName] = useState("");
-  const [leadSource, setLeadSource] = useState("");
-  const [salesAgentId, setSalesAgentId] = useState("");
-  const [status, setStatus] = useState("");
-  const [priority, setPriority] = useState("");
-  const [timeToClose, setTimeToClose] = useState(0);
-  const [tags, setTags] = useState("");
+  // Remove tag function
+  const removeTag = (tagToRemove) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
 
+  // Create new lead
   const formLeadHandler = async (e) => {
     e.preventDefault();
 
+    // ✅ Validate all required fields
+    if (!name.trim()) {
+      toast.error("Lead name is required");
+      return;
+    }
+    if (!leadSource) {
+      toast.error("Lead source is required");
+      return;
+    }
+    if (!salesAgentId) {
+      toast.error("Sales agent is required");
+      return;
+    }
+    if (!status) {
+      toast.error("Status is required");
+      return;
+    }
+    if (!priority) {
+      toast.error("Priority is required");
+      return;
+    }
+    if (!timeToClose || parseInt(timeToClose) < 1) {
+      toast.error("Time to close must be a positive number");
+      return;
+    }
+
     const payload = {
-      name,
+      name: name.trim(),
       source: leadSource,
       salesAgent: salesAgentId,
       status,
       priority,
-      timeToClose,
-      tags,
+      timeToClose: parseInt(timeToClose),
+      tags: tags.length > 0 ? tags : [],
     };
 
+    setLoading(true);
+    setError(null);
+
     try {
-      if (
-        !name ||
-        !leadSource ||
-        !salesAgentId ||
-        !status ||
-        !priority ||
-        !tags
-      ) {
-        toast.error("Please fill all details");
-        return;
-      }
       const res = await fetch(`${hostedUrl}/leads`, {
         method: "POST",
         headers: {
@@ -74,35 +112,58 @@ export function LeadProvider({ children }) {
       if (res.ok) {
         toast.success("Lead added successfully");
 
-        const selectedAgent = displayAgents.find(
-          (agent) => agent._id === salesAgentId,
+        // Find selected agent
+        const selectedAgent = agents.find(
+          (agent) => agent._id === salesAgentId
         );
 
         const newLead = {
           ...result.data,
-          salesAgent: selectedAgent,
+          salesAgent: selectedAgent || salesAgentId,
         };
 
+        // Update local state
+        setAllLeads((prev) => [newLead, ...prev]);
 
-
-        setAllLeads((prev) => [...prev, newLead]);
+        // Reset form
         setName("");
         setLeadSource("");
         setSalesAgentId("");
         setStatus("");
         setPriority("");
-        setTimeToClose(0);
-        setTags("");
+        setTimeToClose("");
+        setTags([]);
+        setTagInput("");
 
         navigation("/leads");
+      } else {
+        toast.error(result.message || "Failed to add lead");
+        setError(result.message);
       }
     } catch (error) {
+      console.error("Error adding lead:", error);
       toast.error(error.message || "Something went wrong");
-      return;
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Delete lead
   const deletedLeadByLeadId = async (leadId) => {
+    if (!leadId) {
+      toast.error("Lead ID is required");
+      return;
+    }
+
+    // Confirm deletion
+    if (!window.confirm("Are you sure you want to delete this lead?")) {
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
     try {
       const res = await fetch(`${hostedUrl}/leads/${leadId}`, {
         method: "DELETE",
@@ -110,76 +171,148 @@ export function LeadProvider({ children }) {
 
       if (res.ok) {
         toast.success("Lead deleted successfully");
-
-        setAllLeads((prev) => {
-          const updated = prev.filter((lead) => lead._id !== leadId);
-
-
-
-          return updated;
-        });
+        
+        // Update local state
+        setAllLeads((prev) => prev.filter((lead) => lead._id !== leadId));
+      } else {
+        const result = await res.json();
+        toast.error(result.message || "Failed to delete lead");
+        setError(result.message);
       }
     } catch (error) {
+      console.error("Error deleting lead:", error);
       toast.error(error.message || "Something went wrong");
-      return;
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const uniqueTags = [...new Set(allLeads.flatMap((lead) => lead.tags))];
+  // Update lead
+  const updateLead = async (leadId, updateData) => {
+    setLoading(true);
+    setError(null);
 
-  const uniqueSources = [...new Set(allLeads.map((lead) => lead.source))];
+    try {
+      const res = await fetch(`${hostedUrl}/leads/${leadId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateData),
+      });
 
+      const result = await res.json();
+
+      if (res.ok) {
+        toast.success("Lead updated successfully");
+        
+        // Update local state
+        setAllLeads((prev) =>
+          prev.map((lead) =>
+            lead._id === leadId ? { ...lead, ...result.data } : lead
+          )
+        );
+        
+        return result.data;
+      } else {
+        toast.error(result.message || "Failed to update lead");
+        setError(result.message);
+        return null;
+      }
+    } catch (error) {
+      console.error("Error updating lead:", error);
+      toast.error(error.message || "Something went wrong");
+      setError(error.message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Filter leads
+  const filterLeads = (filters) => {
+    let filtered = allLeads;
+
+    if (filters.status) {
+      filtered = filtered.filter(lead => lead.status === filters.status);
+    }
+    if (filters.source) {
+      filtered = filtered.filter(lead => lead.source === filters.source);
+    }
+    if (filters.priority) {
+      filtered = filtered.filter(lead => lead.priority === filters.priority);
+    }
+    if (filters.agentId) {
+      filtered = filtered.filter(lead => 
+        typeof lead.salesAgent === 'object' 
+          ? lead.salesAgent._id === filters.agentId 
+          : lead.salesAgent === filters.agentId
+      );
+    }
+    if (filters.tag) {
+      filtered = filtered.filter(lead => lead.tags?.includes(filters.tag));
+    }
+
+    return filtered;
+  };
+
+  // Unique values for filters
+  const uniqueTags = [...new Set(allLeads.flatMap((lead) => lead.tags || []))];
+  const uniqueSources = [...new Set(allLeads.map((lead) => lead.source).filter(Boolean))];
+  const uniquePriorities = [...new Set(allLeads.map((lead) => lead.priority).filter(Boolean))];
+  const uniqueStatus = [...new Set(allLeads.map((lead) => lead.status).filter(Boolean))];
+
+  // Unique agents with details
   const uniqueAgents = [
     ...new Map(
       allLeads
         .filter((lead) => lead.salesAgent)
         .map((lead) => {
-          const agent =
-            typeof lead.salesAgent === "object"
-              ? lead.salesAgent
-              : { _id: lead.salesAgent, name: "Unknown Agent" };
-
+          const agent = typeof lead.salesAgent === "object"
+            ? lead.salesAgent
+            : { _id: lead.salesAgent, name: "Unknown Agent" };
           return [agent._id, agent];
-        }),
+        })
     ).values(),
   ];
-
-  const uniquePriorities = [...new Set(allLeads.map((lead) => lead.priority))];
-
-  const uniqueStatus = [...new Set(allLeads.map((lead) => lead.status))];
 
   return (
     <LeadContext.Provider
       value={{
-        leadsStatus,
-
+        // State
         allLeads,
-        setAllLeads,
-
+        leadsStatus,
+        loading: loading || fetchLoading,
+        error: error || fetchError,
+        
+        // Form states
         name,
         setName,
-
         leadSource,
         setLeadSource,
-
         salesAgentId,
         setSalesAgentId,
-
         status,
         setStatus,
-
         priority,
         setPriority,
-
         timeToClose,
         setTimeToClose,
-
         tags,
         setTags,
-
+        tagInput,
+        setTagInput,
+        addTag,
+        removeTag,
+        
+        // Functions
         formLeadHandler,
         deletedLeadByLeadId,
-
+        updateLead,
+        filterLeads,
+        
+        // Unique values for filters
         uniqueTags,
         uniqueSources,
         uniqueAgents,

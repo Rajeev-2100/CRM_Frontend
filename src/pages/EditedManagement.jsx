@@ -4,7 +4,7 @@ import EditedManagementHeader from "../components/Header/EditedManagementHeader"
 import Footer from "../components/Footer";
 import { useContext, useEffect, useState } from "react";
 import LeadContext from "../context/LeadContext";
-import AgentsContext from "../context/AgentsContext";
+import AgentsContext, { useAgents } from "../context/AgentsContext";
 import { toast } from "react-toastify";
 
 const EditedManagement = () => {
@@ -15,9 +15,8 @@ const EditedManagement = () => {
 
   const navigation = useNavigate();
 
-  const { allLeads, setAllLeads } = useContext(LeadContext);
-
-  const { allAgents } = useContext(AgentsContext);
+  const { allLeads, setAllLeads } = useLeads();
+  const { allAgents } = useAgents()
 
   const displayLeads = allLeads || [];
 
