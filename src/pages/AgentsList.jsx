@@ -7,7 +7,7 @@ import LeadContext, { useLead } from "../context/LeadContext";
 import useFetch from "../useFetch";
 
 const AgentsList = () => {
-  const { allAgents } = useAgents();
+  const { agents } = useAgents();
   const { allLeads } = useLead()
   const [showSidebar, setShowSidebar] = useState(true);
 
@@ -109,8 +109,7 @@ const AgentsList = () => {
                     onChange={(e) => setAgentName(e.target.value)}
                   >
                     <option value="none">Select Agent Name</option>
-
-                    {allAgents?.map((agent) => (
+                    {agents?.map((agent) => (
                       <option value={agent?.name} key={agent?._id}>
                         {agent?.name}
                       </option>

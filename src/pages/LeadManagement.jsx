@@ -100,7 +100,7 @@ const LeadManagement = () => {
                     <p><strong>Lead Name:</strong> {leadDetails?.name}</p>
                     <p><strong>Sales Agent:</strong> {leadDetails?.salesAgent?.name || "No Agent"}</p>
                     <p><strong>Lead Source:</strong> {leadDetails?.source}</p>
-                    <p><strong>Tags:</strong> {leadDetails?.tags?.join(", ")}</p>
+                    <p><strong>Tags:</strong> {leadDetails?.tags?.name.join(", ")}</p>
                   </div>
                 </div>
                 <div className="col-12 col-md-6 col-lg-5">

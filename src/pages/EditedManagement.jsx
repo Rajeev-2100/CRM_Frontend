@@ -3,8 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import EditedManagementHeader from "../components/Header/EditedManagementHeader";
 import Footer from "../components/Footer";
 import { useContext, useEffect, useState } from "react";
-import LeadContext from "../context/LeadContext";
-import AgentsContext, { useAgents } from "../context/AgentsContext";
+import { useLead } from "../context/LeadContext";
+import { useAgents } from "../context/AgentsContext";
 import { toast } from "react-toastify";
 
 const EditedManagement = () => {
@@ -15,8 +15,8 @@ const EditedManagement = () => {
 
   const navigation = useNavigate();
 
-  const { allLeads, setAllLeads } = useLeads();
-  const { allAgents } = useAgents()
+  const { allLeads, setAllLeads } = useLead();
+  const { allAgents } = useAgents();
 
   const displayLeads = allLeads || [];
 
@@ -157,7 +157,11 @@ const EditedManagement = () => {
           <div className={showSidebar ? "col-12 col-md-9" : "col-12"}>
             <div
               className="rounded-4 shadow-lg p-4 p-md-5"
-              style={{ backgroundColor: "#ffffff", border: "1px solid #e3e8ef", height: "96vh" }}
+              style={{
+                backgroundColor: "#ffffff",
+                border: "1px solid #e3e8ef",
+                height: "96vh",
+              }}
             >
               <div className="text-center mb-4">
                 <h2 className="fw-bold text-dark">Edit Lead Management</h2>
@@ -167,7 +171,9 @@ const EditedManagement = () => {
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3">
                     <div className="col-12 mb-3">
-                      <label htmlFor="name"><b>Lead Name: </b></label>
+                      <label htmlFor="name">
+                        <b>Lead Name: </b>
+                      </label>
                       <input
                         className="form-control"
                         name="name"
@@ -178,7 +184,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6  mb-3">
-                      <label htmlFor="source"><b>Source: </b></label>
+                      <label htmlFor="source">
+                        <b>Source: </b>
+                      </label>
                       <select
                         className="form-select"
                         name="source"
@@ -193,7 +201,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="agentName"><b>Lead Owner Name: </b></label>
+                      <label htmlFor="agentName">
+                        <b>Lead Owner Name: </b>
+                      </label>
                       <select
                         className="form-select"
                         name="salesAgent"
@@ -210,7 +220,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="status"><b>Lead Status: </b></label>
+                      <label htmlFor="status">
+                        <b>Lead Status: </b>
+                      </label>
                       <select
                         className="form-select"
                         name="status"
@@ -225,7 +237,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="priority"><b>Priority: </b></label>
+                      <label htmlFor="priority">
+                        <b>Priority: </b>
+                      </label>
                       <select
                         className="form-select"
                         name="priority"
@@ -240,7 +254,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6 mb-3">
-                      <label htmlFor="timeToClose"><b>Time of Close Days: </b></label>
+                      <label htmlFor="timeToClose">
+                        <b>Time of Close Days: </b>
+                      </label>
                       <input
                         type="number"
                         className="form-control"
@@ -252,7 +268,9 @@ const EditedManagement = () => {
                     </div>
 
                     <div className="col-md-6 mb-4">
-                      <label htmlFor="tags"><b>Tags: </b></label>
+                      <label htmlFor="tags">
+                        <b>Tags: </b>
+                      </label>
                       <select
                         className="form-select"
                         name="tags"
